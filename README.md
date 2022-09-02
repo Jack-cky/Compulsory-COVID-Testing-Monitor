@@ -1,43 +1,40 @@
-# Dragon Tiger Billboard — (Hong Kong) Compulsory Testing Notice
-
-Link to Tableau dashboard:
-- [(Hong Kong) Compulsory Testing Notice — Dragon Tiger Billboard](https://public.tableau.com/app/profile/jackcky/viz/HongKongCompulsoryTestingNoticeDragonTigerBillboard/DTB)
+# Dragon Tiger Billboard — Rankings of Building on Compulsory COVID Test in Hong Kong
+Click [me](https://public.tableau.com/app/profile/jackcky/viz/HongKongCompulsoryTestingNoticeDragonTigerBillboard/DTB) to travel Tableau dashboard!
 
 ---
-### _**Background**_
-- Under the pandemic of COVID-19, the Hong Kong Government (HKG) tried to achieve "Dynamic Zero Infection" by introducing vaccine passports to encourage the public to get vaccinated.
-- In addition, the HKG exercises the power of the Prevention and Control of Disease Ordinance (Chapter 599) to require the public who had been present at one specified premise to undergo a COVID-19 nucleic acid test.
+### Background
+- Under the pandemic of COVID-19, the Hong Kong Government (HKG) tries to achieve "Dynamic Zero Infection" by introducing vaccine passports to encourage the public to get vaccinated.
+- In addition, the HKG exercises the power of the Prevention and Control of Disease Ordinance (Chapter 599) to require the public to undergo a COVID-19 nucleic acid test if they had been present at one specified premise.
+- Earlier we found an interesting [post](https://forum.hkgolden.com/thread/7600216/page/1) in HkGolden discussing the annoyance of the Compulsory Testing Notice (CTN) and looking for a Dragon Tiger Billboard (a.k.a. 龍虎榜 in Chinese or ranking billboard in English) to see which buildings appeared on the CTN the most.
+- Unfortunately, there is no such official publication for the ranking on the CTN. We were inspired by the interests and kicked started the project of building a Dragon Tiger Billboard to dashboardise the frequency of specified premises being listed on the CTN.
 
 ---
-### _**Motivation**_
-- Earlier we saw a [post](https://forum.hkgolden.com/thread/7600216/page/1) in HKGolden, discussing the policy of the Compulsory Testing Notice (CTN) that annoyed some groups of people. It is true that the policy is quite disturbing for we have been tested 3 times over the past few months.
-- There is no official publication about the CTN statistics. It seems to be interesting to know which buildings have been tested the most under the policy. Using the dragon tiger billboard gives us a quick review of the figures and spots out the top testing buildings.
+### Dashboard Demo
+![dashboard_demo](https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/dashboard_demo.gif)
 
 ---
-### _**Project Workflow**_
-1. Download [CTN](https://www.chp.gov.hk/en/features/105294.html) from the Centre for Health Protection.
-2. Work on CTN to extract "Specified Place" information.
-3. Save the results as the data model.
-4. Build the dragon tiger billboard.
-
-![project_flow](imgs/project_flow.png)
+### Data Source
+For the absence of tabular data on CTN, data is drawn from raw [PDF files](https://www.chp.gov.hk/en/features/105294.html) available on the Centre for Health Protection. External data, such as geocoding of addresses, will be extracted as well. Data processing is done in Python scripting.
 
 ---
-### _**Assumption**_
-- CTN are captured since 14 January 2022 for consistent records.
-- Due to the PDF table extraction limit, only column "指明地點 Specified place" will be used.
-- Only consider specified places with a valid address, which ignored addresses without sub-districts or with a typo.
-- Geographic information heavily rely on the results given by `Hong Kong Address Parser`.
+### Project Implementation
+1. Download CTNs from the CHP for the start of the project.
+ - CTNs are captured since 14 January 2022 due to inconsistent table format
+ - Up-to-date CTN records with 31 August 2022
+2. Extract information from PDFs for building a data model.
+ - For configuration of dependency, only column "指明地點 Specified place" will be ingested
+ - Places with a typo or without a [sub-district](https://www.rvd.gov.hk/doc/tc/hkpr15/06.pdf) will be removed
+ - Geographic information of given addresses is referenced by [Hong Kong Address Parser](https://github.com/chunlaw/HKAddressParser)
+3. Save the output acting as a data source for the dashboard.
+4. Build a dragon tiger billboard for dashboarding frequency of specified premises.
+
+![project_implementation](https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/project_implementation.png)
 
 ---
-### _**Dashboard Demo**_
-![dashboard_demo](imgs/dashboard_demo.gif)
+### Dashboard Explanation
+![dashboard_explanation](https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/dashboard_explanation.png)
 
 ---
-### _**References**_
-- [有冇網統計強檢龍虎榜](https://forum.hkgolden.com/thread/7600216/page/1)
-- [COVID-19 - Lists of Specified Premises of Compulsory Testing Notices](https://www.chp.gov.hk/en/features/105294.html)
-- [Parse PDF Files While Retaining Structure with Tabula-py](https://aegis4048.github.io/parse-pdf-files-while-retaining-structure-with-tabula-py)
-- [Areas and Districts](https://www.rvd.gov.hk/doc/tc/hkpr15/06.pdf)
-- [Hong Kong Address Parser](https://github.com/chunlaw/HKAddressParser)
-- [2020-2021_05月份交齊功課龍虎榜](https://hodao.edu.hk/CustomPage/131/2020-2021_05月份交齊功課龍虎榜.jpg)
+### Acknowledgements
+- The dashboard design is stolen from [Homework Dragon Tiger Billboard](https://hodao.edu.hk/CustomPage/131/2020-2021_05月份交齊功課龍虎榜.jpg) by Ho Dao College.
+- Usage of Tabula-py is referenced from [here](https://aegis4048.github.io/parse-pdf-files-while-retaining-structure-with-tabula-py) which introduces the framework usage in detail.
