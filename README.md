@@ -1,4 +1,9 @@
 # Dragon Tiger Billboard — Rankings of Building on Compulsory COVID Test in Hong Kong
+<p align="center">
+    <img src="https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/community_testing.png" width="500px" height="300px"><br>
+    <i> Credit: <a href="https://www.info.gov.hk/gia/general/202202/10/P2022021000374.htm"> info.gov.hk </a></i>
+</p>
+
 Click [me](https://public.tableau.com/app/profile/jackcky/viz/HongKongCompulsoryTestingNoticeDragonTigerBillboard/DTB) to travel Tableau dashboard!
 
 ---
@@ -10,7 +15,7 @@ Click [me](https://public.tableau.com/app/profile/jackcky/viz/HongKongCompulsory
 
 ---
 ### Dashboard Demo
-![dashboard_demo](https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/dashboard_demo.gif)
+<p align="center"><a href="https://public.tableau.com/app/profile/jackcky/viz/HongKongCompulsoryTestingNoticeDragonTigerBillboard/DTB"><img src="https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/dashboard_demo.gif"></a></p>
 
 ---
 ### Data Source
@@ -27,12 +32,11 @@ For the absence of tabular data on CTN, data is drawn from [PDF files](https://w
     -  Geographic information of given addresses is referenced by [Hong Kong Address Parser](https://github.com/chunlaw/HKAddressParser)
 3. Save the output acting as a data source for the dashboard.
 4. Build a Dragon Tiger Billboard for dashboarding frequency of specified premises.
-
-![project_implementation](https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/project_implementation.png)
+<p align="center"><a href="https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/tree/main/src"><img src="https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/project_implementation.png"></a></p>
 
 ---
 ### Dashboard Explanation
-![dashboard_explanation](https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/dashboard_explanation.png)
+<p align="center"><a href="https://public.tableau.com/app/profile/jackcky/viz/HongKongCompulsoryTestingNoticeDragonTigerBillboard/DTB"><img src="https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/dashboard_explanation.png"></a></p>
 
 ---
 ### Acknowledgements
