@@ -1,6 +1,6 @@
 # Dragon Tiger Billboard — Rankings of Building on Compulsory COVID Test in Hong Kong
 <p align="center">
-    <a href="https://www.chp.gov.hk/files/pdf/ctn.pdf"><img src="https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/community_testing.png"></a><br>
+    <a href="https://www.chp.gov.hk/files/pdf/ctn.pdf"><img src="https://github.com/Jack-cky/DTB-Rankings_of_Building_on_Compulsory_COVID_Test/blob/main/imgs/community_testing_new.png"></a><br>
     <i> Credit: <a href="https://www.info.gov.hk/gia/general/202202/10/P2022021000374.htm"> info.gov.hk </a></i>
 </p>
 
