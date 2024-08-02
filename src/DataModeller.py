@@ -1,10 +1,10 @@
-import logging
 import os
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 from dotenv import load_dotenv
+
+from utils import setup_logger
 
 
 load_dotenv("config/.env")
@@ -12,13 +12,6 @@ load_dotenv("config/.env")
 PTH_LOG = Path(os.getenv("PTH_LOG", "logs"))
 PTH_GEO = Path(os.getenv("PTH_GEO", "data/geocode"))
 PTH_OUT = Path(os.getenv("PTH_OUT", "data"))
-
-logging.basicConfig(
-    filename=PTH_LOG / "DataModeller.log",
-    filemode="a",
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    level=logging.INFO,
-)
 
 
 class DataModeller:
@@ -51,12 +44,11 @@ class DataModeller:
     
     def __init__(self) -> None:
         """
-        Define a list of Parquets to be modelled; and address mapping tables.
+        Define a list of Parquets to be modelled.
         """
+        self.logger = setup_logger("DataModeller", PTH_LOG / "DataModeller.log")
+        
         self.processed_pdfs = {file.stem for file in PTH_GEO.glob("*.parquet")}
-        
-        logging.info(f"- Total of {len(self.processed_pdfs)} PDFs to be modelled.")
-        
     
     def _build_data_model_from_tab(self, data: pd.DataFrame) -> None:
         """
@@ -117,7 +109,8 @@ class DataModeller:
             
             return df
         
-        df = data.pipe(fill_missing_addr, "eng") \
+        df = data \
+            .pipe(fill_missing_addr, "eng") \
             .pipe(fill_missing_addr, "chi") \
             .pipe(cleanse_district) \
             .pipe(map_chi_addr) \
@@ -134,12 +127,15 @@ class DataModeller:
         """
         dfs = []
         
-        for pdf in self.processed_pdfs:
-            ctn = pd.read_parquet(PTH_GEO / f"{pdf}.parquet")
-            dfs.append(ctn)
-        
-        df = pd.concat(dfs, ignore_index=True)
-        self._build_data_model_from_tab(df)
+        if self.processed_pdfs:
+            self.logger.info(f"Total of {len(self.processed_pdfs)} PDFs to be modelled.")
+            
+            for pdf in self.processed_pdfs:
+                ctn = pd.read_parquet(PTH_GEO / f"{pdf}.parquet")
+                dfs.append(ctn)
+            
+            df = pd.concat(dfs, ignore_index=True)
+            self._build_data_model_from_tab(df)
 
 
 if __name__ == "__main__":

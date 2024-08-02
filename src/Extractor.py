@@ -1,4 +1,3 @@
-import logging
 import os
 from pathlib import Path
 
@@ -11,6 +10,8 @@ from adobe.pdfservices.operation.pdfjobs.params.extract_pdf.extract_element_type
 from adobe.pdfservices.operation.pdfjobs.params.extract_pdf.extract_pdf_params import ExtractPDFParams
 from adobe.pdfservices.operation.pdfjobs.result.extract_pdf_result import ExtractPDFResult
 
+from utils import setup_logger
+
 
 load_dotenv("config/.env")
 
@@ -18,20 +19,13 @@ PTH_LOG = Path(os.getenv("PTH_LOG", "logs"))
 PTH_PDF = Path(os.getenv("PTH_PDF", "data/pdf"))
 PTH_ZIP = Path(os.getenv("PTH_ZIP", "data/zip"))
 
-logging.basicConfig(
-    filename=PTH_LOG / "Extractor.log",
-    filemode="a",
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    level=logging.INFO,
-)
-
 
 class Extractor:
     def __init__(self) -> None:
         """
         Defines Adobe PDF service instance; and a list of PDFs to be extracted.
         """
-        PTH_ZIP.mkdir(parents=True, exist_ok=True)
+        self.logger = setup_logger("Extractor", PTH_LOG / "Extractor.log")
         
         credentials = ServicePrincipalCredentials(
             client_id=os.getenv("CLIENT_ID"),
@@ -95,7 +89,7 @@ class Extractor:
                 file.write(asset_stream.get_input_stream())
             
         except Exception as e:
-            logging.warning(f"Failed to extract table from {ctn}: {str(e)}")
+            self.logger.warning(f"Failed to extract table from {ctn}: {str(e)}")
     
     def extract_table(self) -> None:
         """
@@ -104,7 +98,7 @@ class Extractor:
         for idx, pdf in enumerate(self.outstanding_pdfs):
             if idx % 50 == 0:
                 cnt = len(self.outstanding_pdfs) - idx
-                logging.info(f"- Pending {cnt} PDFs to be extracted.")
+                self.logger.info(f"Pending {cnt} PDFs to be extracted.")
             
             self._extract_table_from_pdf(pdf)
 
