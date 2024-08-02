@@ -1,6 +1,7 @@
 <!-- TITLE -->
 # 💉 Compulsory COVID Testing Monitor
 
+
 <!-- BACKBROUND -->
 <div align="center">
   <div class="headline">
@@ -8,13 +9,13 @@
       <img src="./imgs/repo_headline.png">
     </a>
   </div>
-  <div class="tag">
-    <a href="https://hub.docker.com/r/jackcky/ctn_monitor"><img src="https://img.shields.io/badge/Data Pipeline-2CA5E0?&logo=docker&logoColor=white"></a>
-    <a href="https://public.tableau.com/app/profile/jack.cky/viz/HongKongCompulsoryTestingNoticeDragonTigerBillboard/CTN"><img src="https://img.shields.io/badge/CTN Dashboard-orange?&logo=Tableau&logoColor=white"></a>
+  <div class="badge">
+    <a href="https://hub.docker.com/r/jackcky/ctn_monitor"><img src="https://img.shields.io/badge/Pipeline-2CA5E0?&logo=docker&logoColor=white"></a>
+    <a href="https://public.tableau.com/app/profile/jack.cky/viz/HongKongCompulsoryTestingNoticeDragonTigerBillboard/CTN"><img src="https://img.shields.io/badge/Dashboard-orange?&logo=Tableau&logoColor=white"></a>
   </div>
 </div>
 
-<br>Amid the COVID-19 pandemic, the Hong Kong Government (HKG) is striving to achieve _Dynamic Zero Infection_ by introducing vaccine passports to encourage public vaccinations. Furthermore, HKG is exercising its power under the Prevention and Control of Disease Ordinance (Chapter 599) to require those who have been present at specified premises to undergo a COVID-19 nucleic acid test.
+<br>Amid COVID-19 pandemic, the Hong Kong Government (HKG) was striving to achieve _Dynamic Zero Infection_ by introducing vaccine passports to encourage public vaccinations. Furthermore, HKG was exercising its power under the Prevention and Control of Disease Ordinance (Chapter 599) to require those who had been present at specified premises to undergo a COVID-19 nucleic acid test.
 
 To effectively monitor the COVID situation, we have built an end-to-end pipeline solution that gathers data and builds a dashboard. This dashboard allows the public (end users) to understand the current pandemic status and alerts them to potential outbreaks in their neighbourhoods.
 
@@ -25,7 +26,7 @@ To effectively monitor the COVID situation, we have built an end-to-end pipeline
 </div>
 
 **First Published:** 25 August 2022  
-**Last Updated:** 22 July 2024
+**Last Updated:** 2 August 2024
 
 
 <!-- ROADMAP -->
@@ -44,7 +45,7 @@ To effectively monitor the COVID situation, we have built an end-to-end pipeline
 ## Motivation: Visualise the Compulsory Test Frequency
 Earlier, we came across an intriguing [post](https://forum.hkgolden.com/thread/7600216/page/1) on HKGolden discussing the nuisances caused by the Compulsory Testing Notice (CTN) and the desire for a _Dragon Tiger Billboard_ (also known as 龍虎榜 in Chinese or ranking billboard in English), which ranks the buildings appearing most frequently on the CTN.
 
-Unfortunately, there is no official publication providing such a ranking. The CTN is presented in PDF format, making it challenging to grasp the status of each location. Inspired by this idea, we initiated a project to create a dashboard that conveniently visualises the frequency of specified premises being listed on the CTN.
+Unfortunately, there was no official publication providing such a ranking. The CTN was presented in PDF format, making it challenging to grasp the status of each location. Inspired by this idea, we initiated a project to create a dashboard that conveniently visualises the frequency of specified premises being listed on the CTN.
 
 <div align="center">
   <a href="https://forum.hkgolden.com/thread/7600216/page/1">
@@ -57,12 +58,15 @@ Unfortunately, there is no official publication providing such a ranking. The CT
 <a name="2"></a>
 
 ## How Many Times You Have Been Selected?
-If you resided in Hong Kong in 2022, it is likely you were asked to undergo a COVID test. However, do you know how many times you were officially requested to take a test?
+If you resided in Hong Kong in 2022, it is likely you were asked to undergo a COVID test. However, do you know how many times you were officially asked to take a test?
 
 <a name="2.1"></a>
 
 ### Finding the Latest Updates
-Simply visit [Compulsory COVID Testing Monitor](https://public.tableau.com/app/profile/jack.cky/viz/HongKongCompulsoryTestingNoticeDragonTigerBillboard/CTN) on Tableau Public and you can view the most recently affected buildings. The last record of CTN was on 23 December 2022.
+Simply visit **Compulsory COVID Testing Monitor** on [Tableau Public](https://public.tableau.com/app/profile/jack.cky/viz/HongKongCompulsoryTestingNoticeDragonTigerBillboard/CTN) and you can find the most recently affected buildings.
+
+> [!IMPORTANT]  
+> The last record of CTN was on 23 December 2022.
 
 <div align="center">
   <a href="https://public.tableau.com/app/profile/jack.cky/viz/HongKongCompulsoryTestingNoticeDragonTigerBillboard/CTN">
@@ -72,32 +76,95 @@ Simply visit [Compulsory COVID Testing Monitor](https://public.tableau.com/app/p
 
 <a name="2.2"></a>
 
-### Hosting Your CTN Monitor
-You can host the data pipeline in your preferred environment using a Docker container. Docker simplifies deployment on any platform, whether on-premise or in the cloud. The instructions below will guide you on how to deploy it on your local machine. In this pipeline, we utilise the [Adobe PDF Extract API](https://developer.adobe.com/document-services/apis/pdf-extract/), which requires API credentials. You can create one for free by following their [instructions](https://developer.adobe.com/document-services/docs/overview/pdf-extract-api/quickstarts/python/). Be sure to update the `CLIENT_ID` and `CLIENT_SECRET` in the `./config/.env` before running the container.
+### Hosting Your CTN Monitor Pipeline
+You can host the data pipeline in your favourable environment. The instructions below will guide you through the deployment process. We use [Adobe PDF Extract API](https://developer.adobe.com/document-services/apis/pdf-extract/) in the pipeline, which requires API credentials. You can create one for free by following their [instructions](https://developer.adobe.com/document-services/docs/overview/pdf-extract-api/quickstarts/python/).
 
-```{sh}
-$ git clone https://github.com/Jack-cky/Compulsory-COVID-Testing-Monitor
-$ cd Compulsory-COVID-Testing-Monitor
-$ cp ./config/.env.example ./config/.env
-$ docker pull jackcky/ctn_monitor:v2
-$ docker run --env-file ./config/.env jackcky/ctn_monitor:v2
-```
+> [!CAUTION]  
+> The pipeline is deprecated because we already achieved _Dynamic Zero Infection_ 👌🏻.
 
-> Note: double check you have updated the API credentials before running the pipeline.
+<details>
+  <summary>💻 (Recommended) Local Host</summary>
+  <div class="local_host">
+    <p class="preface">
+      Being lightweight, the pipeline is designed for a localhost with local directories. It is highly recommended to host it on a local computer for cost efficiency. Before following the steps, make sure your computer has <a href="https://www.anaconda.com/">Anaconda</a> installed for running the pipeline.
+    </p>
+    
+  1. Clone the repository, and navigate inside the folder.
+      ```{sh}
+      $ git clone https://github.com/Jack-cky/Compulsory-COVID-Testing-Monitor.git
+      $ cd Compulsory-COVID-Testing-Monitor
+      ```
+  2. Set up configuration for execution.
+      ```{sh}
+      $ cp ./config/.env.example ./config/.env
+      ```
+     Update API credentials inside `./config/.env`.
+      ```{Properties}
+      CLIENT_ID=your_pdf_services_client_id
+      CLIENT_SECRET=your_pdf_services_client_secret
+      ```
+      (Optional) By default, the pipeline processes only today's record, if date range is not defined.
+      ```{Properties}
+      DATE_FROM=20220111
+      DATE_TO=20221223
+      ```
+  3. Set up a virtual environment.
+      ```{sh}
+      $ make init
+      ```
+  4. Execute the pipeline.
+      ```{sh}
+      $ make run
+      ```
+  </div>
+</details>
+
+<details>
+  <summary>🐳 Docker Local Host</summary>
+  <div class="local_docker">
+    <p class="preface">
+      Although the pipeline is designed for local directories, the content can still be mounted to retrieve the output data. Before following the steps, make sure your computer has <a href="https://www.docker.com/">Docker</a> installed for running the pipeline.
+    </p>
+  
+  1. Download configuration for execution.
+      ```{sh}
+      $ wget https://raw.githubusercontent.com/Jack-cky/Compulsory-COVID-Testing-Monitor/main/config/.env.example
+      $ cp ./.env.example ./.env
+      ```
+      Update API credentials inside `.env`.
+      ```{Properties}
+      CLIENT_ID=your_pdf_services_client_id
+      CLIENT_SECRET=your_pdf_services_client_secret
+      ```
+      (Optional) By default, the pipeline processes only today's record, if date range is not defined.
+      ```{Properties}
+      DATE_FROM=20220111
+      DATE_TO=20221223
+      ```
+  2. Set up a folder to be mounted.
+      ```{sh}
+      $ mkdir data
+      ```
+      Execute the pipeline.
+      ```{sh}
+      $ docker run --env-file ./.env -v ./data:/ctn_monitor/data jackcky/ctn_monitor
+      ```
+  </div>
+</details>
 
 
 <!-- SECTION 3 -->
 <a name="3"></a>
 
 ## Solution Architecture
-The architecture of our project is quite straightforward. Every day, the **Centre for Health Protection** releases a [CTN](https://www.chp.gov.hk/en/features/105294.html) which are structured in a tabular format, detailing all specified locations. For the extraction of these tables, we utilise the **Adobe PDF Extract API**. This API has been chosen due to its superior OCR capabilities tailored for this use case.
+The architecture is quite straightforward. Every day, the **Centre for Health Protection** releases a [CTN](https://www.chp.gov.hk/en/features/105294.html) which is table structured in PDF format, detailing all specified locations.
 
-To enhance the dataset, we have added spatial information to supplement the addresses. This is achieved by calling an [API](https://github.com/chunlaw/HKAddressParser) from the **Hong Kong Address Parser**, a tool that harmonises with HKG's APIs. 
+For the extraction of these tables, we utilise the **Adobe PDF Extract API**. This API accurately captures tables in PDF format, compared to other open source tools. To enrich the dataset, we have supplemented the addresses with spatial information using **Hong Kong Address Parser** to access HKG's [APIs](https://github.com/chunlaw/HKAddressParser).
 
-Given the well structured data, our data model remains fairly simple. It consolidates the data into an **Excel** file which then serves as the dashboard's data source. The dashboard is crafted in **Tableau** and published on Tableau Public for the general public to review. 
+The modelling part remains as simple as it is. It consolidates the data into an **Excel** file, which then serves as the data source for the dashboard. The dashboard is crafted in **Tableau** and published on Tableau Public for the general public to review.
 
 <div align="center">
-  <a href="#0">
+  <a href="#3">
     <img src="./imgs/solution_architect.png" width="70%">
   </a>
 </div>
@@ -105,7 +172,16 @@ Given the well structured data, our data model remains fairly simple. It consoli
 <a name="3.1"></a>
 
 ### Production Scenario
-Suppose you target to deploy the pipeline in an **AWS** environment. You would need to slightly adjust the pipeline to send output data to **RDS** (or any other SQL database). A **Lambda** function could then be scheduled to execute the docker image once every night. Given the light workload and small amount of data, the free tier of AWS would likely suffice to cover the costs. In essence, this means you could potentially host the data pipeline within an AWS environment without incurring any charges.
+To productionise the pipeline, the output destination needs to be changed depending on the situation. Suppose you want to deploy the pipeline in an **AWS** environment. The data layer will be directed to a **S3** bucket. A **Lambda** function could then be scheduled to execute a docker image (further development required) once every night. Assuming the dashboard serves the end user 24/7, it requires around 0.1 USD per month for the operation. Detailed price calculations can be found on the [calculator](https://calculator.aws/#/estimate?id=ecd9871ebad63384635c2b8eeed40fce0ba9127e).
+
+<div align="center">
+  <a href="https://calculator.aws/#/estimate?id=ecd9871ebad63384635c2b8eeed40fce0ba9127e">
+    <img src="./imgs/prod_cost.png" width="70%">
+  </a>
+</div>
+
+> [!NOTE]  
+> The estimated operating cost does not include Tableau licence fee.
 
 
 <!-- MISCELLANEOUS -->
@@ -113,8 +189,23 @@ Suppose you target to deploy the pipeline in an **AWS** environment. You would n
 
 ## Change Logs
 <details>
-  <summary>[Ver. 2.0.1] 2024-07-25</summary>
-  <div class="answer">
+  <summary>[Ver. 2.0.2] 2024-08-02</summary>
+  <div class="detail">
+    Enhanced pipeline execution.
+    <ul>
+      <li>Improved pipeline with directory setup.</li>
+      <li>Used Makefile for recompilation.</li>
+      <li>Updated Dockerfile to reduce image size.</li>
+      <li>Added product backlog for review.</li>
+      <li>Wrote more descriptive instructions.</li>
+      <li>Calculated operational costs in production scenario.</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>[Ver. 2.0.1] 2024-07-22</summary>
+  <div class="detail">
     Revamped the data pipeline and dashboard design.
     <ul>
       <li>Switched PDF table extraction from using Tabula-py to the Adobe PDF Extract API.</li>
@@ -126,10 +217,14 @@ Suppose you target to deploy the pipeline in an **AWS** environment. You would n
 
 <details>
   <summary>[Ver. 1.0.1] 2022-08-25</summary>
-  <div class="answer">
+  <div class="detail">
     Initial publication.
   </div>
 </details>
+
+
+## Product Backlog
+This project is managed with a product backlog. You can review the [backlog](https://docs.google.com/spreadsheets/d/e/2PACX-1vTqacmng4cAW6KmvTK5WSX-wi3PhZ9PJsLzDB9JcoofvtYiJ-Len8j7NQYhdZdbSWBXEB4kYW-Q_wgm/pubhtml?gid=1323681662) to understand the prioritised list of features, changes, enhancements, and bug fixes planned for future development.
 
 
 ## License
