@@ -1,10 +1,11 @@
-import logging
 import os
 from pathlib import Path
 from zipfile import ZipFile
 
 import pandas as pd
 from dotenv import load_dotenv
+
+from utils import setup_logger
 
 
 load_dotenv("config/.env")
@@ -13,20 +14,13 @@ PTH_LOG = Path(os.getenv("PTH_LOG", "logs"))
 PTH_ZIP = Path(os.getenv("PTH_ZIP", "data/zip"))
 PTH_TAB = Path(os.getenv("PTH_TAB", "data/table"))
 
-logging.basicConfig(
-    filename=PTH_LOG / "Tabular.log",
-    filemode="a",
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    level=logging.INFO,
-)
-
 
 class Tabular:
     def __init__(self) -> None:
         """
         Define a list of ZIPs to be tabulated.
         """
-        PTH_TAB.mkdir(parents=True, exist_ok=True)
+        self.logger = setup_logger("Tabular", PTH_LOG / "Tabular.log")
         
         self.outstanding_tabs = self._get_outstanding_tab()
     
@@ -62,7 +56,7 @@ class Tabular:
                             dfs.append(_df)
         
         except Exception as e:
-            logging.warning(f"Failed to tabulate tables from {ctn}: {str(e)}")
+            self.logger.warning(f"Failed to tabulate tables from {ctn}: {str(e)}")
         
         else:
             df = pd.concat(dfs, ignore_index=True) \
@@ -76,7 +70,7 @@ class Tabular:
         for idx, pdf in enumerate(self.outstanding_tabs):
             if idx % 50 == 0:
                 cnt = len(self.outstanding_tabs) - idx
-                logging.info(f"- Pending {cnt} ZIPs to be tabularised.")
+                self.logger.info(f"Pending {cnt} ZIPs to be tabularised.")
             
             self._tabulate_excel_from_zip(pdf)
 

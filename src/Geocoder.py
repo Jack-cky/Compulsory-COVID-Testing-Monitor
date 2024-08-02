@@ -1,4 +1,3 @@
-import logging
 import os
 import re
 from pathlib import Path
@@ -7,6 +6,7 @@ import pandas as pd
 from dotenv import load_dotenv
 
 from AddressParser import Address
+from utils import setup_logger
 
 
 load_dotenv("config/.env")
@@ -14,13 +14,6 @@ load_dotenv("config/.env")
 PTH_LOG = Path(os.getenv("PTH_LOG", "logs"))
 PTH_TAB = Path(os.getenv("PTH_TAB", "data/table"))
 PTH_GEO = Path(os.getenv("PTH_GEO", "data/geocode"))
-
-logging.basicConfig(
-    filename=PTH_LOG / "Geocoder.log",
-    filemode="a",
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    level=logging.INFO,
-)
 
 
 class Geocoder:
@@ -30,7 +23,7 @@ class Geocoder:
         """
         Define a list of Parquets to be geocoded.
         """
-        PTH_GEO.mkdir(parents=True, exist_ok=True)
+        self.logger = setup_logger("Geocoder", PTH_LOG / "Geocoder.log")
         
         self.outstanding_pdfs = self._get_outstanding_pdf()
     
@@ -89,19 +82,19 @@ class Geocoder:
             result = None
         
         if not result and addr_eng:
-            logging.warning(self.tmp_msg.format("full", 1, addr_full))
+            self.logger.warning(self.tmp_msg.format("full", 1, addr_full))
             
             ad = Address(f"{addr_eng}")
             result = ad.ParseAddress()
         
         if not result and addr_chi:
-            logging.warning(self.tmp_msg.format("English", 2, addr_eng))
+            self.logger.warning(self.tmp_msg.format("English", 2, addr_eng))
             
             ad = Address(f"{addr_chi}")
             result = ad.ParseAddress()
         
         if not result:
-            logging.warning(self.tmp_msg.format("Chinese", 3, addr_chi))
+            self.logger.warning(self.tmp_msg.format("Chinese", 3, addr_chi))
             
             df = pd.DataFrame()
         else:
@@ -171,7 +164,7 @@ class Geocoder:
         for idx, pdf in enumerate(self.outstanding_pdfs):
             if idx % 50 == 0:
                 cnt = len(self.outstanding_pdfs) - idx
-                logging.info(f"- Pending {cnt} PDFs to be geocoded.")
+                self.logger.info(f"Pending {cnt} PDFs to be geocoded.")
             
             self._geocode_address_from_tab(pdf)
 
