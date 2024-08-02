@@ -24,11 +24,14 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
-**/configs
+**/archive
+**/config
 **/data
+**/docker
 **/imgs
 **/logs
 **/notebooks
 **/twb
 LICENSE
+makefile
 README.md
