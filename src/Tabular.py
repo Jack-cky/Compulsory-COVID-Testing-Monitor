@@ -3,12 +3,9 @@ from pathlib import Path
 from zipfile import ZipFile
 
 import pandas as pd
-from dotenv import load_dotenv
 
-from utils import setup_logger
+from .utils import setup_logger
 
-
-load_dotenv("config/.env")
 
 PTH_LOG = Path(os.getenv("PTH_LOG", "logs"))
 PTH_ZIP = Path(os.getenv("PTH_ZIP", "data/zip"))

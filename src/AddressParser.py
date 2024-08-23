@@ -2,7 +2,7 @@
 Modified from HKAddressParser
 - Credit: https://github.com/chunlaw/HKAddressParser
 
-Change Log:
+Changelog:
 1. [ALL] Consolidated all functions and classes into a single script.
 2. [ParseAddress] Outputs empty dictionary if `flattenOGCIO` returns None.
 3. [queryOGCIO] Catches `JSONDecodeError` when loading JSON response.

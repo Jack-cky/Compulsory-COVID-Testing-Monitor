@@ -3,12 +3,9 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 import requests
-from dotenv import load_dotenv
 
-from utils import setup_logger
+from .utils import setup_logger
 
-
-load_dotenv("config/.env")
 
 PTH_LOG = Path(os.getenv("PTH_LOG", "logs"))
 PTH_PDF = Path(os.getenv("PTH_PDF", "data/pdf"))

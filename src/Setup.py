@@ -1,10 +1,6 @@
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
-
-
-load_dotenv("config/.env")
 
 PTH_LOG = Path(os.getenv("PTH_LOG", "logs"))
 PTH_PDF = Path(os.getenv("PTH_PDF", "data/pdf"))

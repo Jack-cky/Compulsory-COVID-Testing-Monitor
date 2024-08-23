@@ -3,13 +3,10 @@ import re
 from pathlib import Path
 
 import pandas as pd
-from dotenv import load_dotenv
 
-from AddressParser import Address
-from utils import setup_logger
+from .AddressParser import Address
+from .utils import setup_logger
 
-
-load_dotenv("config/.env")
 
 PTH_LOG = Path(os.getenv("PTH_LOG", "logs"))
 PTH_TAB = Path(os.getenv("PTH_TAB", "data/table"))

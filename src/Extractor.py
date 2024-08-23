@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
 from adobe.pdfservices.operation.auth.service_principal_credentials import ServicePrincipalCredentials
 from adobe.pdfservices.operation.pdf_services import PDFServices
 from adobe.pdfservices.operation.pdf_services_media_type import PDFServicesMediaType
@@ -10,10 +9,8 @@ from adobe.pdfservices.operation.pdfjobs.params.extract_pdf.extract_element_type
 from adobe.pdfservices.operation.pdfjobs.params.extract_pdf.extract_pdf_params import ExtractPDFParams
 from adobe.pdfservices.operation.pdfjobs.result.extract_pdf_result import ExtractPDFResult
 
-from utils import setup_logger
+from .utils import setup_logger
 
-
-load_dotenv("config/.env")
 
 PTH_LOG = Path(os.getenv("PTH_LOG", "logs"))
 PTH_PDF = Path(os.getenv("PTH_PDF", "data/pdf"))
