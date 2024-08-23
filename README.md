@@ -120,7 +120,7 @@ You can host the data pipeline in your preferred environment. The instructions b
 </details>
 
 <details>
-  <summary>🐳 Docker Local Host</summary>
+  <summary>🐳 Docker Host</summary>
   <div class="local_docker">
     <p class="preface">
       Although the pipeline is designed for local directories, the content can still be mounted to retrieve the output data. Before following the steps, make sure your computer has <a href="https://www.docker.com/">Docker</a> installed for running the pipeline.
