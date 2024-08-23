@@ -10,8 +10,8 @@
     </a>
   </div>
   <div class="badge">
-    <a href="https://hub.docker.com/r/jackcky/ctn_monitor"><img src="https://img.shields.io/badge/Pipeline-2CA5E0?&logo=docker&logoColor=white"></a>
     <a href="https://public.tableau.com/app/profile/jack.cky/viz/HongKongCompulsoryTestingNoticeDragonTigerBillboard/CTN"><img src="https://img.shields.io/badge/Dashboard-orange?&logo=Tableau&logoColor=white"></a>
+    <a href="https://hub.docker.com/r/jackcky/ctn-monitor"><img src="https://img.shields.io/badge/Image-2CA5E0?&logo=docker&logoColor=white"></a>
   </div>
 </div>
 
@@ -26,7 +26,7 @@ To effectively monitor the COVID situation, we have built an end-to-end pipeline
 </div>
 
 **First Published:** 25 August 2022  
-**Last Updated:** 2 August 2024
+**Last Updated:** 23 August 2024
 
 
 <!-- ROADMAP -->
@@ -77,43 +77,43 @@ Simply visit **Compulsory COVID Testing Monitor** on [Tableau Public](https://pu
 <a name="2.2"></a>
 
 ### Hosting Your CTN Monitor Pipeline
-You can host the data pipeline in your favourable environment. The instructions below will guide you through the deployment process. We use [Adobe PDF Extract API](https://developer.adobe.com/document-services/apis/pdf-extract/) in the pipeline, which requires API credentials. You can create one for free by following their [instructions](https://developer.adobe.com/document-services/docs/overview/pdf-extract-api/quickstarts/python/).
+You can host the data pipeline in your preferred environment. The instructions below will guide you through the deployment process. We use [Adobe PDF Extract API](https://developer.adobe.com/document-services/apis/pdf-extract/) in the pipeline, which requires API credentials. You can create one for free by following their [instructions](https://developer.adobe.com/document-services/docs/overview/pdf-extract-api/quickstarts/python/).
 
 > [!CAUTION]  
 > The pipeline is deprecated because we already achieved _Dynamic Zero Infection_ 👌🏻.
 
 <details>
-  <summary>💻 (Recommended) Local Host</summary>
+  <summary>💻 Local Host (Recommended)</summary>
   <div class="local_host">
     <p class="preface">
       Being lightweight, the pipeline is designed for a localhost with local directories. It is highly recommended to host it on a local computer for cost efficiency. Before following the steps, make sure your computer has <a href="https://www.anaconda.com/">Anaconda</a> installed for running the pipeline.
     </p>
     
-  1. Clone the repository, and navigate inside the folder.
-      ```{sh}
+  1. Clone the repository and navigate inside the folder.
+      ```sh
       $ git clone https://github.com/Jack-cky/Compulsory-COVID-Testing-Monitor.git
       $ cd Compulsory-COVID-Testing-Monitor
       ```
   2. Set up configuration for execution.
-      ```{sh}
+      ```sh
       $ cp ./config/.env.example ./config/.env
       ```
-     Update API credentials inside `./config/.env`.
-      ```{Properties}
+  3. Update API credentials inside `./config/.env`.
+      ```
       CLIENT_ID=your_pdf_services_client_id
       CLIENT_SECRET=your_pdf_services_client_secret
       ```
-      (Optional) By default, the pipeline processes only today's record, if date range is not defined.
-      ```{Properties}
+  4. (Optional) By default, the pipeline processes only today's record, if date range is not defined.
+      ```
       DATE_FROM=20220111
       DATE_TO=20221223
       ```
-  3. Set up a virtual environment.
-      ```{sh}
+  5. Set up a virtual environment.
+      ```sh
       $ make init
       ```
-  4. Execute the pipeline.
-      ```{sh}
+  6. Execute the pipeline.
+      ```sh
       $ make run
       ```
   </div>
@@ -126,28 +126,28 @@ You can host the data pipeline in your favourable environment. The instructions 
       Although the pipeline is designed for local directories, the content can still be mounted to retrieve the output data. Before following the steps, make sure your computer has <a href="https://www.docker.com/">Docker</a> installed for running the pipeline.
     </p>
   
-  1. Download configuration for execution.
-      ```{sh}
-      $ wget https://raw.githubusercontent.com/Jack-cky/Compulsory-COVID-Testing-Monitor/main/config/.env.example
-      $ cp ./.env.example ./.env
+  1. Clone the repository and navigate inside the folder.
+      ```sh
+      $ git clone https://github.com/Jack-cky/Compulsory-COVID-Testing-Monitor.git
+      $ cd Compulsory-COVID-Testing-Monitor
       ```
-      Update API credentials inside `.env`.
-      ```{Properties}
+  2. Set up configuration for execution.
+      ```sh
+      $ cp ./config/.env.example ./config/.env
+      ```
+  3. Update API credentials inside `./config/.env`.
+      ```
       CLIENT_ID=your_pdf_services_client_id
       CLIENT_SECRET=your_pdf_services_client_secret
       ```
-      (Optional) By default, the pipeline processes only today's record, if date range is not defined.
-      ```{Properties}
+  4. (Optional) By default, the pipeline processes only today's record, if date range is not defined.
+      ```
       DATE_FROM=20220111
       DATE_TO=20221223
       ```
-  2. Set up a folder to be mounted.
-      ```{sh}
-      $ mkdir data
-      ```
-      Execute the pipeline.
-      ```{sh}
-      $ docker run --env-file ./.env -v ./data:/ctn_monitor/data jackcky/ctn_monitor
+  5. Execute the pipeline.
+      ```sh
+      $ docker run --env-file ./config/.env -v ./data:/ctn_monitor/data jackcky/ctn-monitor
       ```
   </div>
 </details>
@@ -189,24 +189,43 @@ To productionise the pipeline, the output destination needs to be changed depend
 
 ## Change Logs
 <details>
-  <summary>[Ver. 2.0.2] 2024-08-02</summary>
+  <summary>[2.0.3] 2024-08-23</summary>
   <div class="detail">
-    Enhanced pipeline execution.
+    Enhanced pipeline folder structure.
+    <h4>Changed</h4>
     <ul>
-      <li>Improved pipeline with directory setup.</li>
-      <li>Used Makefile for recompilation.</li>
-      <li>Updated Dockerfile to reduce image size.</li>
-      <li>Added product backlog for review.</li>
-      <li>Wrote more descriptive instructions.</li>
-      <li>Calculated operational costs in production scenario.</li>
+      <li>Updated the services used in architect diagram.</li>
+      <li>Updated backlog URL.</li>
+      <li>Removed redundant reading of .env file.</li>
+      <li>Move Dockerfile and main script to root directory.</li>
     </ul>
   </div>
 </details>
 
 <details>
-  <summary>[Ver. 2.0.1] 2024-07-22</summary>
+  <summary>[2.0.2] 2024-08-02</summary>
+  <div class="detail">
+    Enhanced pipeline execution.
+    <h4>Added</h4>
+    <ul>
+      <li>Improved pipeline with directory setup.</li>
+      <li>Used Makefile for recompilation.</li>
+      <li>Added product backlog for review.</li>
+      <li>Calculated operational costs in production scenario.</li>
+    </ul>
+    <h4>Changed</h4>
+    <ul>
+      <li>Updated Dockerfile to reduce image size.</li>
+      <li>Wrote more descriptive instructions.</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>[2.0.1] 2024-07-22</summary>
   <div class="detail">
     Revamped the data pipeline and dashboard design.
+    <h4>Changed</h4>
     <ul>
       <li>Switched PDF table extraction from using Tabula-py to the Adobe PDF Extract API.</li>
       <li>Segregated the data pipeline into distinct modules.</li>
@@ -216,7 +235,7 @@ To productionise the pipeline, the output destination needs to be changed depend
 </details>
 
 <details>
-  <summary>[Ver. 1.0.1] 2022-08-25</summary>
+  <summary>[1.0.1] 2022-08-25</summary>
   <div class="detail">
     Initial publication.
   </div>
@@ -224,7 +243,7 @@ To productionise the pipeline, the output destination needs to be changed depend
 
 
 ## Product Backlog
-This project is managed with a product backlog. You can review the [backlog](https://docs.google.com/spreadsheets/d/e/2PACX-1vTqacmng4cAW6KmvTK5WSX-wi3PhZ9PJsLzDB9JcoofvtYiJ-Len8j7NQYhdZdbSWBXEB4kYW-Q_wgm/pubhtml?gid=1323681662) to understand the prioritised list of features, changes, enhancements, and bug fixes planned for future development.
+This project is managed with a product backlog. You can review the [backlog](https://docs.google.com/spreadsheets/d/1hZBngU6REh5M9iyUclPlf8IyO3Iz3ZVW1exo_-vM1ks/pubhtml?gid=1323681662&single=true) to understand the prioritised list of features, changes, enhancements, and bug fixes planned for future development.
 
 
 ## License
@@ -233,4 +252,3 @@ This project is licensed under the MIT License. See the [LICENSE](./LICENSE) fil
 
 ## Credits
 - Dashboard design: [交齊功課龍虎榜@Ho Dao College](https://hodao.edu.hk/CustomPage/131/2020-2021_05月份交齊功課龍虎榜.jpg)
-- Icon image: [OnlineWebFonts](http://www.onlinewebfonts.com)
