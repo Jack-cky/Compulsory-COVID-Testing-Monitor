@@ -19,7 +19,7 @@ init: create_env install
 run:
 	source $$(conda info --base)/etc/profile.d/conda.sh && \
 	conda activate $(ENV_NAME) && \
-	python src/Pipeline.py
+	python main.py
 
 clean:
 	source $$(conda info --base)/etc/profile.d/conda.sh && \
