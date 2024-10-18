@@ -19,7 +19,3 @@ class Setup:
         PTH_ZIP.mkdir(parents=True, exist_ok=True)
         PTH_TAB.mkdir(parents=True, exist_ok=True)
         PTH_GEO.mkdir(parents=True, exist_ok=True)
-
-
-if __name__ == "__main__":
-    Setup()

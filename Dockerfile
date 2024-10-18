@@ -1,11 +1,17 @@
-ARG PYTHON_VERSION=3.10.14
+ARG PYTHON_IMAGE=python:3.10.14-slim
 
-FROM python:${PYTHON_VERSION}-slim as base
+FROM ${PYTHON_IMAGE} AS builder
 
-WORKDIR /ctn_monitor
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir --target=packages -r requirements.txt
+
+FROM ${PYTHON_IMAGE}
+
+COPY --from=builder packages /usr/local/lib/python3.10/site-packages
+
+WORKDIR /ctn-monitor
 
 COPY . .
-
-RUN pip install --no-cache-dir -r requirements.txt
 
 CMD ["python", "main.py"]

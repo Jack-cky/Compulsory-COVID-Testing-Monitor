@@ -98,7 +98,3 @@ class Extractor:
                 self.logger.info(f"Pending {cnt} PDFs to be extracted.")
             
             self._extract_table_from_pdf(pdf)
-
-
-if __name__ == "__main__":
-    Extractor().extract_table()

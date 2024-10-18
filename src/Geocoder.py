@@ -164,7 +164,3 @@ class Geocoder:
                 self.logger.info(f"Pending {cnt} PDFs to be geocoded.")
             
             self._geocode_address_from_tab(pdf)
-
-
-if __name__ == "__main__":
-    Geocoder().geocode_address()

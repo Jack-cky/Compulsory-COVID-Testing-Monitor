@@ -125,7 +125,8 @@ class DataModeller:
         dfs = []
         
         if self.processed_pdfs:
-            self.logger.info(f"Total of {len(self.processed_pdfs)} PDFs to be modelled.")
+            n_pdf = len(self.processed_pdfs)
+            self.logger.info(f"Total of {n_pdf} PDFs to be modelled.")
             
             for pdf in self.processed_pdfs:
                 ctn = pd.read_parquet(PTH_GEO / f"{pdf}.parquet")
@@ -133,7 +134,3 @@ class DataModeller:
             
             df = pd.concat(dfs, ignore_index=True)
             self._build_data_model_from_tab(df)
-
-
-if __name__ == "__main__":
-    DataModeller().build_model()

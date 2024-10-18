@@ -70,7 +70,3 @@ class Tabular:
                 self.logger.info(f"Pending {cnt} ZIPs to be tabularised.")
             
             self._tabulate_excel_from_zip(pdf)
-
-
-if __name__ == "__main__":
-    Tabular().tabulate_pdf()

@@ -1,7 +1,7 @@
 .PHONY: create_env install run clean init
 
 SHELL := /bin/bash
-PYTHON_VERSION=3.10
+PYTHON_VERSION=3.10.14
 ENV_NAME=ctn-monitor
 CONDA_PATH=$(shell which conda)
 

@@ -79,10 +79,3 @@ class Downloader:
             download_date = download_date.strftime("%Y%m%d")
             
             self._download_ctn_from_chp(download_date)
-
-
-if __name__ == "__main__":
-    DATE_FROM = os.getenv("DATE_FROM")
-    DATE_TO = os.getenv("DATE_TO")
-    
-    Downloader(DATE_FROM, DATE_TO).download_pdf()
