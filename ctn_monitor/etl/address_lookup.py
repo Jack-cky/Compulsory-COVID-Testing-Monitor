@@ -6,6 +6,8 @@ Changelog:
 1. [ALL] Consolidated all functions and classes into a single script.
 2. [ParseAddress] Outputs empty dictionary if `flattenOGCIO` returns None.
 3. [queryOGCIO] Catches `JSONDecodeError` when loading JSON response.
+4. [queryOGCIO] Updated base URL to "https://www.als.gov.hk/lookup"
+   as per latest OGCIO API endpoint.
 """
 import bisect
 import json
@@ -19,7 +21,7 @@ from collections import defaultdict
 def matchStr(inAddr, fieldName, inStr):
     matchedPos = None
     goodness = None
-    
+
     # try striping the head of inStr till match is found
     # to deal with cases like eg. inAddr = 兆康站, inStr = 港鐵兆康站
     for i in range(0, len(inStr)):
@@ -29,10 +31,10 @@ def matchStr(inAddr, fieldName, inStr):
             matchedPos = (matchedPosStart, matchedPosStart + len(newInStr))
             goodness = (len(newInStr)/len(inStr) - 0.5)*2
             break
-        
+
         if (len(inStr) - i) <= 3: break  # give up if remaining inStr too short
         if (i >= len(inStr) // 2): break  # give up if already stripped half
-    
+
     return [(fieldName, inStr, matchedPos, goodness)]
 
 
@@ -45,25 +47,25 @@ def matchChiStreetOrVillage(inAddr, inDict):
      },
     """
     matches = []
-    
+
     key = None
     if 'StreetName' in inDict: key = 'StreetName'
     if 'VillageName' in inDict: key = 'VillageName'
-    
+
     inStr = inDict[key]
     inStr = inStr.split()[-1]  # to deal with case like '屯門 青麟路'
     streetMatch = matchStr(inAddr, key, inStr)[0]
     matches.append(streetMatch)
-    
+
     ogcioBNoFrom = inDict.get('BuildingNoFrom', '')
     ogcioBNoTo = inDict.get('BuildingNoTo', '')
-    
+
     if not ogcioBNoFrom: return matches
-    
+
     inAddrBNoSpan = None  # the position of the words in the inAddr string
     inAddrBNoFrom = ''
     inAddrBNoTo = ''
-    
+
     # look for street no. after the street in inAddr
     matchedPos = streetMatch[2]
     if matchedPos != None:
@@ -75,21 +77,21 @@ def matchChiStreetOrVillage(inAddr, inDict):
             inAddrBNoSpan = tuple(matchedPosEnd + x for x in reResult.span())
             inAddrBNoFrom = reResult.groups()[0]
             inAddrBNoTo = reResult.groups()[1]
-    
+
     if ogcioBNoTo == '': ogcioBNoTo = ogcioBNoFrom
     if inAddrBNoTo == '': inAddrBNoTo = inAddrBNoFrom
-    
+
     # check overlap between inAddrBNoFrom-To  and ogcioBNoFrom-To
     if (ogcioBNoTo < inAddrBNoFrom or ogcioBNoFrom > inAddrBNoTo):
         inAddrBNoSpan = None  # no overlap so set the matched span to none
-    
+
     if 'BuildingNoFrom' in inDict:
         goodness = 1. if inAddrBNoFrom==ogcioBNoFrom else 0.5
         matches.append(('BuildingNoFrom', ogcioBNoFrom, inAddrBNoSpan, goodness))
     if 'BuildingNoTo' in inDict:
         goodness = 1. if inAddrBNoTo == ogcioBNoTo else 0.5
         matches.append(('BuildingNoTo', ogcioBNoTo, inAddrBNoSpan, goodness))
-    
+
     return matches
 
 
@@ -116,18 +118,18 @@ class Similarity:
     inAddr = ''
     inAddrHasMatch = []
     ogcioMatches = {}
-    
+
     def __repr__(self):
         outStr = ''
         outStr += "query: %s\n" % self.inAddr
-        
+
         tmp = "".join([ s if self.inAddrHasMatch[i] else '?' for (i,s) in enumerate(self.inAddr)])
         outStr += "match: %s\n" % tmp
-        
+
         outStr += "ogcioMatches: %s\n"% self.ogcioMatches
-        
+
         outStr += "Score: %s\n" % self.score
-        
+
         return outStr
 
 
@@ -139,10 +141,10 @@ def getSimilarityWithOGCIO(inAddr, ogcioResult):
     """
     matches = matchDict(inAddr, ogcioResult)
     #print (matches)
-    
+
     inAddrHasMatch  = [False for i in range(len(inAddr))]
     score = 0
-    
+
     scoreDict = {
         'Region' : 10,
         'StreetName' : 20,
@@ -152,19 +154,19 @@ def getSimilarityWithOGCIO(inAddr, ogcioResult):
         'BuildingNoTo' :30,
         'BuildingName' : 40,
     }
-    
+
     for (fieldName, fieldVal, matchSpan, goodness) in matches:
         if matchSpan==None:
             score-=1
             continue
-        
+
         # if fieldName not in scoreDict:
         #     print("ignored ", fieldName, fieldVal)
         #     print(ogcioResult)
-        
+
         score += scoreDict.get(fieldName,0) * goodness
         for i in range(matchSpan[0],matchSpan[1]) : inAddrHasMatch[i] = True
-    
+
     s = Similarity()
     s.score = score
     s.inAddr = inAddr
@@ -182,7 +184,7 @@ class Address:
             self._result = self.flattenOGCIO()
         else:
             self._result = None
-    
+
     def flattenOGCIO(self):
         flat_result = []
         for idx, addr in enumerate(self._OGCIOresult):
@@ -194,18 +196,18 @@ class Address:
             }
             flat_result.append(temp)
         return(flat_result)
-    
+
     def ParseAddress(self):
         if self._result:
             for (idx, aResult) in enumerate(self._result):
                 self._result[idx]['match'] = getSimilarityWithOGCIO(
                     self._inputAddr, aResult['chi'])
-            
+
             self._result.sort(key=lambda x: x['match'].score, reverse=True)
             return self._result[0]
         else:
             return defaultdict(lambda: {})
-    
+
     # class Phrases:
     def searchPhrase(self, string, phrases):
         phrases.sort(key=lambda t: t[1])
@@ -218,7 +220,7 @@ class Address:
                 i for i in self._tempOGIOAddr if i[1] != string]
             return phrases[idx-1]
         return None
-    
+
     def getChiAddress(self):
         addr = self._inputAddr
         result = []
@@ -240,7 +242,7 @@ class Address:
                     result += [['?', addr[start]]]
             start += len(string)
         return result
-    
+
     # Get Results from OGCIO API
     def queryOGCIO(self, RequestAddress, n):
         session = requests.Session()
@@ -249,15 +251,15 @@ class Address:
             "Accept-Language": "en,zh-Hant",
             "Accept-Encoding": "gzip"
         }
-        base_url = "https://www.als.ogcio.gov.hk/lookup?"
-        
+        base_url = "https://www.als.gov.hk/lookup?"
+
         r = session.get(base_url,
                         headers=headers,
                         params={
                             "q": RequestAddress,
                             "n": n
                         })
-        
+
         soup = BeautifulSoup(r.content, 'html.parser')
         try:
             if 'SuggestedAddress' in json.loads(str(soup)):
@@ -266,7 +268,7 @@ class Address:
                 return None
         except ValueError:
             return None
-    
+
     def flattenJSON(self, data, json_items):
         for key, value in data.items():
             if type(value) is dict:
@@ -282,6 +284,6 @@ class Address:
                 else:
                     json_items.append((key, str(value)))
         return json_items
-    
+
     def removeFloor(self, inputAddress):
         return re.sub("([0-9A-z\-\s]+[樓層]|[0-9A-z號\-\s]+[舖鋪]|地[下庫]|平台).*", "", inputAddress)

@@ -1,27 +1,21 @@
-.PHONY: create_env install run clean init
+.DEFAULT_GOAL := help
+.PHONY: help up down reset
 
-SHELL := /bin/bash
-PYTHON_VERSION=3.10.14
-ENV_NAME=ctn-monitor
-CONDA_PATH=$(shell which conda)
+AIRFLOW_DIR=airflow
+ENV_FILE=$(AIRFLOW_DIR)/.env
+COMPOSE=docker compose --env-file $(ENV_FILE) -f $(AIRFLOW_DIR)/docker-compose.yaml
 
-create_env:
-	conda create -n $(ENV_NAME) python=$(PYTHON_VERSION) -y
+help:
+	@printf "Available targets:\n"
+	@printf "  make up        # build image and start Airflow\n"
+	@printf "  make down      # stop Airflow services\n"
+	@printf "  make reset     # stop services and remove volumes\n"
 
-install:
-	$(CONDA_PATH) init bash
-	source $$(conda info --base)/etc/profile.d/conda.sh && \
-	conda activate $(ENV_NAME) && \
-	pip install -r requirements.txt
+up:
+	$(COMPOSE) up -d --build
 
-init: create_env install
+down:
+	$(COMPOSE) down
 
-run:
-	source $$(conda info --base)/etc/profile.d/conda.sh && \
-	conda activate $(ENV_NAME) && \
-	python main.py
-
-clean:
-	source $$(conda info --base)/etc/profile.d/conda.sh && \
-	conda deactivate && \
-	conda env remove -n $(ENV_NAME)
+reset:
+	$(COMPOSE) down -v
