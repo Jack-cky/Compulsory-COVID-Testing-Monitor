@@ -14,8 +14,7 @@ from airflow.sdk import Variable, dag, task
     },
     schedule="0 1 * * *",
     start_date=pendulum.datetime(2022, 1, 11, tz="Asia/Hong_Kong"),
-    end_date=pendulum.datetime(2022, 12, 23, tz="Asia/Hong_Kong"),
-    catchup=False,
+    catchup=True,
     max_active_runs=1,
     tags=["ctn", "etl"],
 )

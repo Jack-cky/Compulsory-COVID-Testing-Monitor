@@ -37,7 +37,9 @@ def tabulate_zipped_excel(ctn_zip: str) -> str:
                         df.columns = [f"col_{c+1}" for c in range(df.shape[1])]
                         dfs.append(df)
     except (FileNotFoundError, ValueError, OSError) as err:
-        raise RuntimeError(f"Failed to tabulate tables from {ctn_zip}: {err}") from err
+        raise RuntimeError(
+            f"Failed to tabulate tables from {ctn_zip}: {err}"
+        ) from err
 
     if not dfs:
         raise ValueError(f"No Excel table found in {ctn_zip}")

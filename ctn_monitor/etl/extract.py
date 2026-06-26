@@ -64,7 +64,9 @@ def extract_pdf_table(ctn_pdf: str, client_id: str, client_secret: str) -> str:
         result = response.get_result().get_resource()
         stream = pdf_services.get_content(result)
     except (FileNotFoundError, ValueError, RuntimeError) as err:
-        raise RuntimeError(f"Failed to extract table from {ctn_pdf}: {err}") from err
+        raise RuntimeError(
+            f"Failed to extract table from {ctn_pdf}: {err}"
+        ) from err
 
     write_bytes_atomic(stream.get_input_stream(), pth_zip)
 
